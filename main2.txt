@@ -1,0 +1,121 @@
+
+create table branch(branch_id serial primary key,
+							  name_ varchar(23)not null,
+							  location_ varchar(50) not null,
+							  phone_no integer not null);
+
+
+							 
+create table employee(emp_id serial primary key,
+								emp_no varchar(13) unique,
+								emp_name varchar(40)not null,
+								emp_father_name varchar(40) not null,
+								emp_dob date,
+								emp_address varchar(60) not null,
+								emp_gender varchar(12) not null,
+								emp_adhaar_no varchar(15) unique,
+								emp_image bytea,
+								emp_status varchar(12) not null,
+								emp_join_data date,
+								emp_leave_date date,
+								 designation_name varchar(20),  /*fk*/
+								experience varchar(150),
+								 branch_id  integer,   /*fk*/
+								 /*How to add foreign key anathor table*/
+								 constraint branch_id foreign key(branch_id) references branch(branch_id));
+								 
+								 
+
+
+
+
+
+
+
+create table qualification(
+								 ssc varchar(13) not null,
+								 intermediate varchar(13) not null,
+								 ug varchar(14) not null,
+								 pg varchar(13),
+								 description varchar(100) not null,
+								 experince varchar(150) ,
+								 emp_id integer,  /*fk*/
+								  constraint emp_id foreign key(emp_id)references employee(emp_id));
+								 
+
+
+
+create table allowances(allowance_id serial primary key,
+								  name_ varchar(23) not null,
+								  date_ date ,
+								  allowance_amount decimal(18,3),
+								  bonus_amount decimal(18,3));
+
+
+
+
+create table salary(
+											  basic_salary_amount decimal(18,3) not null,
+											  permonth_amount decimal(18,3),
+											  description varchar(100) not null,
+											  deduction_date date,
+											 insurance_deduction_amount decimal(18,3),
+											 attendance_deduction_amount decimal(18,3),
+											  emp_id integer,  /*fk*/
+											   constraint emp_id foreign key(emp_id)references employee(emp_id));
+											   								   
+						  
+
+create table time_sheet(attendance_id serial primary key,
+								   att_date date,
+								   starttime date,
+								   endtime date,
+								   status varchar(20) not null,
+								   emp_id integer,  /*fk*/
+								    constraint emp_id foreign key(emp_id)references employee(emp_id));
+	
+								   							 
+
+create table issue_allowance(issue_allowance_id serial primary key,
+								   issue_date date,
+								   issue_allowance_amount decimal(18,3),
+								   issue_bonus_amount decimal(18,3),
+								   emp_id integer, /*fk*/
+							           allowance_id integer, /*fk*/	
+								   constraint emp_id foreign key(emp_id)references employee(emp_id),
+								   constraint allowance_id foreign key(allowance_id)references allowances(allowance_id));
+										
+
+
+create table issue_salary(issue_salary_id serial primary key,
+								issue_date date,
+								medical_amount decimal(18,3),
+								insurance_amount decimal(18,3),
+								personal_pay_amount decimal(18,3),
+								total_salary decimal(18,3),
+								net_amount decimal(18,3),
+								total_deduction_amount decimal(18,3),
+								 emp_id integer, /*fk*/
+								 issue_allowance_id integer, /*fk*/
+								 attendance_id integer, /*fk*/
+								 constraint emp_id foreign key(emp_id) references employee(emp_id),
+								 constraint issue_allownace_amount foreign key(issue_allowance_id) references issue_allowance(issue_allowance_id),
+								 constraint attendenace_id foreign key(attendance_id) references time_sheet(attendance_id));
+
+								   	
+
+
+create table employee_account(
+							  bank_account_no integer,
+							  ifsc_no varchar(11),
+							  pan_no varchar(10),
+							  emp_id integer, /*fk*/
+							  constraint emp_id foreign key(emp_id) references employee(emp_id));
+
+								 
+								 
+								 
+
+									   								 							   									   
+									   
+											  
